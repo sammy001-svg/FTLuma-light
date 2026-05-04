@@ -1,0 +1,16 @@
+# PHP specific
+composer.lock
+vendor/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Project specific
+uploads/*
+!uploads/.gitkeep
+
+# IDE specific
+.vscode/
+.idea/
+.gemini/

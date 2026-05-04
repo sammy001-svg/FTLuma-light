@@ -1,0 +1,101 @@
+<?php
+require_once 'functions.php';
+
+$page_title = 'Get in Touch';
+include 'includes/header.php';
+?>
+
+<section class="hero">
+    <div class="container">
+        <h1>Connect with <span class="text-gradient">Our Team</span></h1>
+        <p>Have a tip, a question, or just want to say hello? We're always here to listen and engage with our community.</p>
+    </div>
+</section>
+
+<main class="container" style="margin-bottom: 10rem;">
+    <div class="contact-container">
+        <!-- Contact Info Sidebar -->
+        <div class="info-card">
+            <h2 style="font-size: 2rem;">Contact Information</h2>
+            <p style="color: var(--primary-200);">Fill out the form and our team will get back to you within 24 hours.</p>
+            
+            <div class="info-item">
+                <div class="info-icon">📞</div>
+                <div>
+                    <h4 style="color: white;">Phone</h4>
+                    <p style="color: var(--primary-100);">+254 140 147 873</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon">📧</div>
+                <div>
+                    <h4 style="color: white;">Email</h4>
+                    <p style="color: var(--primary-100);">info@ftluma-light.com</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon">📍</div>
+                <div>
+                    <h4 style="color: white;">Office</h4>
+                    <p style="color: var(--primary-100);">Nairobi, Kenya</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                <a href="https://www.facebook.com/profile.php?id=61588350584922" target="_blank" style="font-size: 1.5rem; color: white; opacity: 0.8; transition: var(--transition);"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/ftluma_light/" target="_blank" style="font-size: 1.5rem; color: white; opacity: 0.8; transition: var(--transition);"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/ftluma-light-b157803b2" target="_blank" style="font-size: 1.5rem; color: white; opacity: 0.8; transition: var(--transition);"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form">
+            <form action="#" method="POST">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" id="first_name" name="first_name" class="form-control" placeholder="John" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Doe" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="john@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select id="subject" name="subject" class="form-control" required>
+                        <option value="">Select a topic</option>
+                        <option value="tips">News Tip</option>
+                        <option value="advertising">Advertising</option>
+                        <option value="support">General Support</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message" class="form-control" placeholder="Tell us what's on your mind..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary">Send Message</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<!-- Placeholder for Map -->
+<section class="container" style="margin-bottom: 8rem;">
+    <div style="width: 100%; height: 450px; background: var(--border); border-radius: 2rem; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-weight: 600;">
+        Interactive Map Placeholder
+    </div>
+</section>
+
+<?php include 'includes/footer.php'; ?>
