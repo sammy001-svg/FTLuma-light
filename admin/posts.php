@@ -5,11 +5,18 @@ redirect_if_not_logged_in();
 $posts = get_all_posts_admin();
 $page_title = 'Manage Posts';
 
+$msg = $_GET['msg'] ?? '';
+$err = $_GET['err'] ?? '';
+
 if (isset($_GET['delete'])) {
-    delete_post($_GET['delete']);
-    header('Location: posts.php');
+    if (delete_post($_GET['delete'])) {
+        header('Location: posts.php?msg=Post deleted successfully');
+    } else {
+        header('Location: posts.php?err=Failed to delete post. Please try again.');
+    }
     exit;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,6 +66,10 @@ if (isset($_GET['delete'])) {
             <h1>Manage Posts</h1>
             <a href="post_add.php" class="btn-primary">+ Create New Post</a>
         </div>
+        
+        <?php if ($msg): ?><div class="alert alert-success" style="padding: 1rem; border-radius: 0.75rem; margin-bottom: 2rem; background: #dcfce7; color: #15803d; font-weight: 600;"><?php echo e($msg); ?></div><?php endif; ?>
+        <?php if ($err): ?><div class="alert alert-error" style="padding: 1rem; border-radius: 0.75rem; margin-bottom: 2rem; background: #fee2e2; color: #b91c1c; font-weight: 600;"><?php echo e($err); ?></div><?php endif; ?>
+
 
         <table class="admin-table">
             <thead>

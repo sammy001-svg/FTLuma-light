@@ -5,11 +5,18 @@ redirect_if_not_logged_in();
 $events = get_all_events();
 $page_title = 'Manage Events';
 
+$msg = $_GET['msg'] ?? '';
+$err = $_GET['err'] ?? '';
+
 if (isset($_GET['delete'])) {
-    delete_event($_GET['delete']);
-    header('Location: events.php');
+    if (delete_event($_GET['delete'])) {
+        header('Location: events.php?msg=Event deleted successfully');
+    } else {
+        header('Location: events.php?err=Failed to delete event. Please try again.');
+    }
     exit;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,6 +66,10 @@ if (isset($_GET['delete'])) {
             <h1>Manage Events</h1>
             <a href="event_add.php" class="btn-primary">+ Schedule New Event</a>
         </div>
+
+        <?php if ($msg): ?><div class="alert alert-success" style="padding: 1rem; border-radius: 0.75rem; margin-bottom: 2rem; background: #dcfce7; color: #15803d; font-weight: 600;"><?php echo e($msg); ?></div><?php endif; ?>
+        <?php if ($err): ?><div class="alert alert-error" style="padding: 1rem; border-radius: 0.75rem; margin-bottom: 2rem; background: #fee2e2; color: #b91c1c; font-weight: 600;"><?php echo e($err); ?></div><?php endif; ?>
+
 
         <table class="admin-table">
             <thead>

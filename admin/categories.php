@@ -21,12 +21,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if (isset($_GET['delete'])) {
-    delete_category($_GET['delete']);
-    header('Location: categories.php');
+    if (delete_category($_GET['delete'])) {
+        header('Location: categories.php?msg=Category deleted successfully');
+    } else {
+        header('Location: categories.php?err=Cannot delete category. It may be in use by posts.');
+    }
     exit;
 }
 
+if (isset($_GET['msg'])) $success = $_GET['msg'];
+if (isset($_GET['err'])) $error = $_GET['err'];
 if (isset($_GET['success'])) $success = 'Category added successfully!';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
