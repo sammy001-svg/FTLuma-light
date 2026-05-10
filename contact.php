@@ -116,11 +116,5 @@ include 'includes/header.php';
     </div>
 </main>
 
-<!-- Placeholder for Map -->
-<section class="container" style="margin-bottom: 8rem;">
-    <div style="width: 100%; height: 450px; background: var(--border); border-radius: 2rem; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-weight: 600;">
-        Interactive Map Placeholder
-    </div>
-</section>
 
 <?php include 'includes/footer.php'; ?>
