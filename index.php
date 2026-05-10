@@ -46,7 +46,8 @@ include 'includes/header.php';
                         <img src="<?php echo e($post['featured_image']); ?>" alt="<?php echo e($post['title']); ?>" class="carousel-img">
                         <div class="carousel-overlay">
                             <div class="carousel-caption">
-                                <span class="badge"><?php echo e($post['category_name']); ?></span>
+                                <span class="badge"><?php echo e($post['category_name'] ?? 'Stories'); ?></span>
+
                                 <h1 class="carousel-title">
                                     <a href="<?php echo BASE_URL; ?>/post.php?slug=<?php echo e($post['slug']); ?>"><?php echo e($post['title']); ?></a>
                                 </h1>

@@ -67,6 +67,16 @@ CREATE TABLE IF NOT EXISTS reservations (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
 );
+CREATE TABLE IF NOT EXISTS messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    subject VARCHAR(255),
+    message TEXT NOT NULL,
+    status ENUM('unread', 'read') DEFAULT 'unread',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 -- 2. Seed Data
 -- Insert Categories (using IGNORE to avoid duplicate errors)
@@ -96,7 +106,4 @@ INSERT INTO admins (username, password, email, full_name) VALUES
 
 
 
--- Indexing for performance
-CREATE INDEX idx_post_slug ON posts(slug);
-CREATE INDEX idx_category_slug ON categories(slug);
-CREATE INDEX idx_post_status ON posts(status);
+

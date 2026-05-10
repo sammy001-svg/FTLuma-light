@@ -55,7 +55,9 @@ if (isset($_GET['delete'])) {
             <li><a href="categories.php">Categories</a></li>
             <li><a href="authors.php">Authors</a></li>
             <li><a href="events.php" class="active">Upcoming Events</a></li>
+            <li><a href="messages.php">Messages</a></li>
             <li><a href="reservations.php">Reservations</a></li>
+
             <li><a href="../index.php" target="_blank">View Site ↗</a></li>
             <li style="margin-top: 5rem;"><a href="logout.php" style="color: #f87171;">Logout</a></li>
         </ul>
@@ -94,7 +96,10 @@ if (isset($_GET['delete'])) {
                     <td>
                         <a href="event_edit.php?id=<?php echo $event['id']; ?>" class="btn-action" style="color: var(--primary-700);">Edit</a>
                         <a href="event_reservations.php?id=<?php echo $event['id']; ?>" class="btn-action" style="color: var(--amber-600);">People</a>
-                        <a href="events.php?delete=<?php echo $event['id']; ?>" class="btn-action" style="color: #ef4444;" onclick="return confirm('Are you sure?')">Delete</a>
+                        <a href="javascript:void(0)" 
+                           class="btn-action" 
+                           style="color: #ef4444;" 
+                           onclick="showDeleteModal('events.php?delete=<?php echo $event['id']; ?>', '<?php echo e(addslashes($event['title'])); ?>')">Delete</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -106,5 +111,35 @@ if (isset($_GET['delete'])) {
             </tbody>
         </table>
     </main>
+
+    <!-- Premium Delete Confirmation Modal -->
+    <div id="deleteModal" style="display:none; position:fixed; inset:0; background: rgba(0,0,0,0.4); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 3rem; border-radius: 2rem; max-width: 450px; width: 90%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.3);">
+            <div style="width: 80px; height: 80px; background: #fee2e2; color: #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 2rem;">⚠️</div>
+            <h2 style="font-size: 1.75rem; margin-bottom: 1rem;">Confirm Deletion</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2.5rem;">Are you sure you want to delete <strong id="deleteItemName"></strong>? This action cannot be undone.</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <button onclick="closeDeleteModal()" style="padding: 1rem; border-radius: 1rem; border: 1px solid var(--border); background: white; font-weight: 700; cursor: pointer; transition: all 0.3s ease;">Cancel</button>
+                <a id="confirmDeleteLink" href="#" style="padding: 1rem; border-radius: 1rem; background: #ef4444; color: white; text-decoration: none; font-weight: 700; transition: all 0.3s ease;">Delete Now</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showDeleteModal(link, name) {
+            document.getElementById('deleteItemName').textContent = name;
+            document.getElementById('confirmDeleteLink').href = link;
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeDeleteModal();
+        });
+    </script>
 </body>
 </html>
+

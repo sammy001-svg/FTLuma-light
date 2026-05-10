@@ -1,9 +1,21 @@
 <?php
 require_once 'functions.php';
 
+$success = '';
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (save_contact_message($_POST)) {
+        $success = 'Thank you! Your message has been sent successfully. We will get back to you soon.';
+    } else {
+        $error = 'Sorry, something went wrong. Please try again later.';
+    }
+}
+
 $page_title = 'Get in Touch';
 include 'includes/header.php';
 ?>
+
 
 <section class="hero">
     <div class="container">
@@ -13,7 +25,20 @@ include 'includes/header.php';
 </section>
 
 <main class="container" style="margin-bottom: 10rem;">
+    <?php if ($success): ?>
+        <div class="alert alert-success" style="padding: 1.5rem; background: #dcfce7; color: #15803d; border-radius: 1rem; margin-bottom: 3rem; font-weight: 600;">
+            ✅ <?php echo e($success); ?>
+        </div>
+    <?php endif; ?>
+    
+    <?php if ($error): ?>
+        <div class="alert alert-error" style="padding: 1.5rem; background: #fee2e2; color: #b91c1c; border-radius: 1rem; margin-bottom: 3rem; font-weight: 600;">
+            ❌ <?php echo e($error); ?>
+        </div>
+    <?php endif; ?>
+
     <div class="contact-container">
+
         <!-- Contact Info Sidebar -->
         <div class="info-card">
             <h2 style="font-size: 2rem;">Contact Information</h2>

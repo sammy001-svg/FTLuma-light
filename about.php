@@ -7,7 +7,7 @@ include 'includes/header.php';
 
 <style>
     .about-hero {
-        padding: 10rem 0 6rem;
+        padding: 5rem 0 6rem;
         background: radial-gradient(circle at top right, var(--primary-100), transparent 40%),
                     radial-gradient(circle at bottom left, var(--primary-200), transparent 40%);
         text-align: center;

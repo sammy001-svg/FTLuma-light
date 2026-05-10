@@ -101,8 +101,9 @@ function format_date($date) {
  * Sanitize output
  */
 function e($text) {
-    return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars($text ?? '', ENT_QUOTES, 'UTF-8');
 }
+
 
 /**
  * Admin Functions
@@ -361,3 +362,40 @@ function get_all_reservations() {
                          ORDER BY r.created_at DESC");
     return $stmt->fetchAll();
 }
+
+/**
+ * Contact Messages
+ */
+function save_contact_message($data) {
+    global $pdo;
+    if (!$pdo) return false;
+    
+    $sql = "INSERT INTO messages (name, email, subject, message) VALUES (:name, :email, :subject, :message)";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([
+        'name' => $data['first_name'] . ' ' . $data['last_name'],
+        'email' => $data['email'],
+        'subject' => $data['subject'],
+        'message' => $data['message']
+    ]);
+}
+
+function get_all_messages() {
+    global $pdo;
+    if (!$pdo) return [];
+    $stmt = $pdo->query("SELECT * FROM messages ORDER BY created_at DESC");
+    return $stmt->fetchAll();
+}
+
+function delete_message($id) {
+    global $pdo;
+    $stmt = $pdo->prepare("DELETE FROM messages WHERE id = ?");
+    return $stmt->execute([$id]);
+}
+
+function mark_message_read($id) {
+    global $pdo;
+    $stmt = $pdo->prepare("UPDATE messages SET status = 'read' WHERE id = ?");
+    return $stmt->execute([$id]);
+}
+

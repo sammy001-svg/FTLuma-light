@@ -33,7 +33,15 @@ CREATE TABLE IF NOT EXISTS admins (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Indexing for performance
-CREATE INDEX idx_post_slug ON posts(slug);
-CREATE INDEX idx_category_slug ON categories(slug);
-CREATE INDEX idx_post_status ON posts(status);
+
+CREATE TABLE IF NOT EXISTS messages (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    subject VARCHAR(255),
+    message TEXT NOT NULL,
+    status ENUM('unread', 'read') DEFAULT 'unread',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+

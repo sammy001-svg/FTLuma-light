@@ -34,7 +34,8 @@
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; <?php echo date('Y'); ?> FTLuma-Light. All rights reserved. Designed for elegance.</p>
+            <p>&copy; <?php echo date('Y'); ?> FTLuma. All rights reserved. Designed for elegance.</p>
+
         </div>
     </div>
 </footer>
