@@ -87,9 +87,10 @@ INSERT INTO posts (category_id, author_id, title, slug, content, excerpt, featur
 (2, 1, 'Mastering Glassmorphism in 2026', 'mastering-glassmorphism-2026', '<p>Glassmorphism continues to be a dominant trend in modern UI design. Its ability to create depth and hierarchy through translucent layers is unmatched.</p>', 'A deep dive into the evolution and implementation of glassmorphism in modern interfaces.', 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800', 'published', 1),
 (3, 2, 'The Art of Slow Living in a Fast World', 'art-of-slow-living', '<p>In an age of instant gratification, the practice of slow living offers a path to meaningful connection and mental clarity.</p>', 'Finding balance and intentionality in our hyper-connected modern environment.', 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=800', 'published', 0);
 
--- Insert Default Admin (Password: password123)
+-- Insert Default Admin (Email: info@ftluma-light.com, Password: Ftluma@123@1)
 INSERT INTO admins (username, password, email, full_name) VALUES
-('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@ftluma.com', 'System Administrator');
+('admin', '$2y$10$wtwdMBImY7Eb1OevWCHUbOWFHea.QSi.7OtLWcRDnODYekgvpxOSq', 'info@ftluma-light.com', 'System Administrator');
+
 
 -- Indexing for performance
 CREATE INDEX idx_post_slug ON posts(slug);
