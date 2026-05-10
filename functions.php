@@ -399,3 +399,39 @@ function mark_message_read($id) {
     return $stmt->execute([$id]);
 }
 
+/**
+ * Save a comment for a post
+ */
+function save_comment($post_id, $data) {
+    global $pdo;
+    if (!$pdo) return false;
+    
+    try {
+        $sql = "INSERT INTO comments (post_id, name, email, comment) 
+                VALUES (:post_id, :name, :email, :comment)";
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute([
+            ':post_id' => $post_id,
+            ':name' => $data['name'],
+            ':email' => $data['email'],
+            ':comment' => $data['comment']
+        ]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+/**
+ * Get approved comments for a post
+ */
+function get_comments($post_id) {
+    global $pdo;
+    if (!$pdo) return [];
+    
+    $sql = "SELECT * FROM comments 
+            WHERE post_id = :post_id AND status = 'approved' 
+            ORDER BY created_at DESC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':post_id' => $post_id]);
+    return $stmt->fetchAll();
+}

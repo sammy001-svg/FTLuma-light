@@ -4,15 +4,26 @@ require_once 'functions.php';
 $slug = isset($_GET['slug']) ? $_GET['slug'] : '';
 $post = get_post_by_slug($slug);
 
-if (!$post && !empty($slug)) {
-    // If slug provided but no post found, maybe redirect to 404
-    // header("Location: 404.php");
-    // exit;
+$comment_success = '';
+$comment_error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment'])) {
+    if (save_comment($post['id'], $_POST)) {
+        $comment_success = 'Thank you! Your comment has been posted.';
+    } else {
+        $comment_error = 'Sorry, there was an error posting your comment.';
+    }
+}
+
+$comments = [];
+if ($post && isset($post['id'])) {
+    $comments = get_comments($post['id']);
 }
 
 // Fallback for demo if no slug
 if (!$post) {
     $post = [
+        'id' => 0,
         'title' => 'Sample Blog Post Title',
         'category_name' => 'Design',
         'created_at' => date('Y-m-d H:i:s'),
@@ -27,6 +38,67 @@ if (!$post) {
 $page_title = $post['title'];
 include 'includes/header.php';
 ?>
+
+<style>
+    /* ... existing styles ... */
+    .comments-section {
+        max-width: 720px;
+        margin: 5rem auto 8rem;
+        padding-top: 5rem;
+        border-top: 1px solid var(--border);
+    }
+    .comments-title {
+        font-size: 1.75rem;
+        margin-bottom: 3rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .comment-item {
+        background: var(--bg-white);
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        transition: var(--transition);
+    }
+    .comment-item:hover {
+        border-color: var(--primary-200);
+        box-shadow: var(--shadow-md);
+    }
+    .comment-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+    .comment-author {
+        font-weight: 700;
+        color: var(--primary-900);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .comment-date {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+    }
+    .comment-text {
+        line-height: 1.6;
+        color: #475569;
+    }
+    .comment-form-card {
+        background: #f8fafc;
+        border-radius: 2rem;
+        padding: 3rem;
+        border: 1px solid var(--border);
+        margin-top: 4rem;
+    }
+    .comment-form-title {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+</style>
+
 
 <style>
     .post-header {
@@ -152,6 +224,75 @@ include 'includes/header.php';
             </div>
         </div>
     </article>
+
+    <!-- Comments Section -->
+    <section class="comments-section">
+        <h2 class="comments-title">
+            <span>💬</span> 
+            Discussion (<?php echo count($comments); ?>)
+        </h2>
+
+        <?php if ($comment_success): ?>
+            <div class="alert alert-success" style="padding: 1rem; background: #dcfce7; color: #15803d; border-radius: 1rem; margin-bottom: 2rem;">
+                ✅ <?php echo e($comment_success); ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($comment_error): ?>
+            <div class="alert alert-error" style="padding: 1rem; background: #fee2e2; color: #b91c1c; border-radius: 1rem; margin-bottom: 2rem;">
+                ❌ <?php echo e($comment_error); ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Comments List -->
+        <div class="comments-list">
+            <?php if (!empty($comments)): ?>
+                <?php foreach ($comments as $comment): ?>
+                    <div class="comment-item">
+                        <div class="comment-meta">
+                            <div class="comment-author">
+                                <div style="width: 32px; height: 32px; background: var(--primary-100); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; color: var(--primary-700);">
+                                    <?php echo strtoupper(substr($comment['name'], 0, 1)); ?>
+                                </div>
+                                <?php echo e($comment['name']); ?>
+                            </div>
+                            <span class="comment-date"><?php echo format_date($comment['created_at']); ?></span>
+                        </div>
+                        <div class="comment-text">
+                            <?php echo nl2br(e($comment['comment'])); ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p style="text-align: center; color: var(--text-muted); padding: 2rem; background: var(--bg-white); border-radius: 1.5rem; border: 1px dashed var(--border);">
+                    No comments yet. Be the first to share your thoughts!
+                </p>
+            <?php endif; ?>
+        </div>
+
+        <!-- Comment Form -->
+        <div class="comment-form-card">
+            <h3 class="comment-form-title">Leave a Response</h3>
+            <form action="" method="POST">
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Email Address" required>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label for="comment">Comment</label>
+                    <textarea id="comment" name="comment" class="form-control" placeholder="Share your insights..." required style="min-height: 120px;"></textarea>
+                </div>
+                <button type="submit" name="submit_comment" class="btn-primary" style="width: 100%;">Post Comment</button>
+            </form>
+        </div>
+    </section>
 </main>
 
 <?php include 'includes/footer.php'; ?>
