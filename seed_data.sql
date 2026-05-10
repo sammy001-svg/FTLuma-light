@@ -14,6 +14,6 @@ INSERT INTO posts (category_id, title, slug, content, excerpt, featured_image, s
 (3, 'The Art of Slow Living in a Fast World', 'art-of-slow-living', '<p>In an age of instant gratification, the practice of slow living offers a path to meaningful connection and mental clarity.</p><p>We examine simple shifts in daily habits that can lead to a more intentional and fulfilling lifestyle.</p>', 'Finding balance and intentionality in our hyper-connected modern environment.', 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=800', 'published', 0),
 (4, 'The Future of Remote Work Culture', 'future-of-remote-work', '<p>Remote work is no longer a temporary solution; it is the new standard. Organizations are now focusing on how to build a strong culture across distributed teams.</p>', 'Strategies for maintaining connection and productivity in the age of distributed teams.', 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800', 'published', 0);
 
--- Insert Default Admin (Password: password123)
+-- Insert Default Admin (Password: Ftlum@123@1)
 INSERT INTO admins (username, password, email, full_name) VALUES
-('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@ftluma.com', 'System Administrator');
+('admin', '$2y$10$vBmPaF8ad0xmSc6wxhyp.ONgY3o.ZxmoudkZvH.DHt/pd./mg.Gwi', 'info@ftluma-light.com', 'System Administrator');

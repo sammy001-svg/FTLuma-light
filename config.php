@@ -33,12 +33,29 @@ try {
 }
 
 // Base URL configuration
-if (isset($_ENV['BASE_URL'])) {
+// Base URL configuration
+if (isset($_ENV['BASE_URL']) && !empty($_ENV['BASE_URL'])) {
     define('BASE_URL', rtrim($_ENV['BASE_URL'], '/'));
 } else {
-    $current_dir = dirname($_SERVER['PHP_SELF']);
-    $current_dir = str_replace('\\', '/', $current_dir);
+    // Detect protocol
+    $protocol = 'http';
+    if ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || 
+        (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')) {
+        $protocol = 'https';
+    }
+    
+    // Detect host
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
-    define('BASE_URL', $protocol . "://" . $host . rtrim($current_dir, '/'));
+    
+    // Detect base path
+    // We want the directory where config.php resides, relative to the document root
+    $script_dir = str_replace('\\', '/', __DIR__);
+    $doc_root = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
+    
+    // Remove document root from script dir to get the relative path
+    $base_path = str_replace($doc_root, '', $script_dir);
+    $base_path = rtrim($base_path, '/');
+    
+    define('BASE_URL', $protocol . "://" . $host . $base_path);
 }
+
