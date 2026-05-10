@@ -117,7 +117,13 @@ include 'includes/header.php';
                     <?php for ($i = 1; $i <= 4; $i++): ?>
                         <article class="card">
                             <div class="card-img" style="height: 180px;">
-                                <img src="https://images.unsplash.com/photo-1<?php echo 498050108023 + $i; ?>-c5249f4df085?auto=format&fit=crop&q=80&w=800" alt="Placeholder">
+                                <img src="https://images.unsplash.com/photo-<?php 
+                                    $placeholders = [
+                                        '1498050108023', '1485827404703', '1550745165', '1506126613'
+                                    ];
+                                    echo $placeholders[$i-1] ?? '1498050108023';
+                                ?>?auto=format&fit=crop&q=80&w=800" alt="Placeholder">
+
                             </div>
                             <div class="card-content" style="padding: 1.5rem;">
                                 <span class="card-meta">LIFESTYLE • APR 2026</span>
