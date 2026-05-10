@@ -3,9 +3,11 @@
         <div class="footer-content">
             <div class="footer-info">
                 <a href="<?php echo BASE_URL; ?>" class="logo footer-logo">
-                    <div class="logo-icon">FT</div>
-                    <span>FTLuma-Light</span>
+                    <img src="<?php echo BASE_URL; ?>/assets/images/logo.jpg" alt="FTLuma Logo" style="height: 40px; width: auto; background: white; border-radius: 6px; padding: 2px;">
+                    <span style="font-size: 1.25rem; font-weight: 800; letter-spacing: 0.1em; color: white; margin-left: 0.5rem;">FTLUMA</span>
                 </a>
+
+
                 <p class="footer-text">
                     Sharing modern and elegant perspectives on technology, design, and more. Join our community of curious minds.
                 </p>

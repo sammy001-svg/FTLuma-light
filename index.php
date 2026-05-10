@@ -13,13 +13,28 @@ include 'includes/header.php';
 <div class="news-ticker">
     <div class="container">
         <div class="ticker-content">
-            <span class="ticker-label">Breaking</span>
-            <span>The Future of Sustainable Digital Design is here.</span>
-            <span>New trends in Emerald Green aesthetics taking over UI/UX.</span>
-            <span>How AI is reshaping modern news agencies globally.</span>
+            <span class="ticker-label">Top Stories</span>
+            <div class="ticker-wrapper">
+                <div class="ticker-items">
+                    <?php 
+                    $ticker_posts = get_posts(5);
+                    if (!empty($ticker_posts)):
+                        foreach ($ticker_posts as $p): ?>
+                            <a href="post.php?slug=<?php echo e($p['slug']); ?>" class="ticker-item">
+                                <?php echo e($p['title']); ?>
+                            </a>
+                        <?php endforeach;
+                    else: ?>
+                        <span class="ticker-item">Welcome to FTLuma-Light - Your source for sustainable news.</span>
+                        <span class="ticker-item">New trends in Emerald Green aesthetics taking over UI/UX.</span>
+                    <?php endif; ?>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
 
 <main class="container" style="padding-top: 3rem;">
     <!-- Featured Article Carousel -->

@@ -31,21 +31,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         body {
-            background: var(--primary-900);
+            background: linear-gradient(rgba(8, 28, 21, 0.6), rgba(8, 28, 21, 0.6)), url('../assets/images/login-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
             margin: 0;
+            font-family: 'Inter', sans-serif;
         }
         .login-box {
-            background: white;
-            padding: 3rem;
-            border-radius: 2rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            background: rgba(255, 255, 255, 0.9);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            padding: 3.5rem;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
+
         .login-logo {
             text-align: center;
             margin-bottom: 2.5rem;
@@ -67,9 +75,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="login-box">
         <div class="login-logo">
-            <div class="logo-icon">FT</div>
-            <h2 style="margin-top: 1rem;">Admin Portal</h2>
+            <img src="../assets/images/logo.jpg" alt="FTLuma Logo" style="height: 120px; width: auto; display: block; margin: 0 auto 1.5rem;">
+            <h2>Admin Portal</h2>
         </div>
+
+
 
         <?php if ($error): ?>
             <div class="error-msg"><?php echo e($error); ?></div>

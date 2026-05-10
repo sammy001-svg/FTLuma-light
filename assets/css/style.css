@@ -349,18 +349,58 @@ nav {
 
 .ticker-content {
     display: flex;
-    gap: 2rem;
-    white-space: nowrap;
+    align-items: center;
+    gap: 0; /* Remove gap to keep items against label */
 }
 
 .ticker-label {
     background: var(--primary-500);
-    padding: 0.25rem 0.75rem;
+    padding: 0.25rem 1rem;
     font-weight: 700;
     text-transform: uppercase;
     font-size: 0.75rem;
     border-radius: 4px;
+    position: relative;
+    z-index: 20;
+    flex-shrink: 0;
+    margin-right: 2rem; /* Add spacing here instead of gap */
 }
+
+.ticker-wrapper {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.ticker-items {
+    display: flex;
+    gap: 4rem;
+    animation: ticker-scroll 30s linear infinite;
+    padding-left: 100%;
+}
+
+.ticker-item {
+    white-space: nowrap;
+    color: var(--primary-100);
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.ticker-item:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+@keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+.ticker-items:hover {
+    animation-play-state: paused;
+}
+
+
 
 /* Layout - Sidebar */
 .layout-with-sidebar {
