@@ -37,6 +37,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </a>
 
 
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" style="display: none;">
+        <label for="nav-toggle" class="nav-toggle-label">
+            <span></span>
+        </label>
         
         <ul class="nav-links">
             <li><a href="<?php echo BASE_URL; ?>" <?php echo $current_page == 'index.php' ? 'class="active"' : ''; ?>>Home</a></li>
@@ -46,6 +50,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <li><a href="<?php echo BASE_URL; ?>/about.php" <?php echo $current_page == 'about.php' ? 'class="active"' : ''; ?>>About</a></li>
             <li><a href="<?php echo BASE_URL; ?>/contact.php" <?php echo $current_page == 'contact.php' ? 'class="active"' : ''; ?>>Contact</a></li>
         </ul>
+
         
         <div class="nav-actions">
             <!-- Search or Newsletter could go here -->

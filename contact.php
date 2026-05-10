@@ -78,7 +78,8 @@ include 'includes/header.php';
         <!-- Contact Form -->
         <div class="contact-form">
             <form action="#" method="POST">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+
                     <div class="form-group">
                         <label for="first_name">First Name</label>
                         <input type="text" id="first_name" name="first_name" class="form-control" placeholder="John" required>
