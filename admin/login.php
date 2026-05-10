@@ -77,9 +77,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form action="login.php" method="POST">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" class="form-control" placeholder="Enter username" required autofocus>
+                <label for="username">Username or Email</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="admin or info@ftluma-light.com" required autofocus>
             </div>
+
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" class="form-control" placeholder="Enter password" required>

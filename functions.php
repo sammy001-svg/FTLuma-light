@@ -108,13 +108,15 @@ function e($text) {
  * Admin Functions
  */
 
-function admin_login($username, $password) {
+function admin_login($username_or_email, $password) {
     global $pdo;
     if (!$pdo) return false;
     
-    $stmt = $pdo->prepare("SELECT * FROM admins WHERE username = ?");
-    $stmt->execute([$username]);
+    // Check both username and email
+    $stmt = $pdo->prepare("SELECT * FROM admins WHERE username = ? OR email = ?");
+    $stmt->execute([$username_or_email, $username_or_email]);
     $admin = $stmt->fetch();
+
 
     if ($admin && password_verify($password, $admin['password'])) {
         $_SESSION['admin_id'] = $admin['id'];
