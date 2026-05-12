@@ -5,6 +5,7 @@ $page_title = 'Global News & Perspectives';
 $categories = get_categories();
 $latest_posts = get_latest_posts(8);
 $featured_posts = get_featured_posts(5);
+$trending_posts = get_trending_posts(5);
 
 include 'includes/header.php';
 ?>
@@ -180,27 +181,19 @@ include 'includes/header.php';
 
             <div class="sidebar-box">
                 <h3 class="sidebar-title">Trending Now</h3>
-                <div class="popular-post">
-                    <span class="popular-post-num">01</span>
-                    <div class="popular-post-info">
-                        <h4><a href="#">AI and the Future of Content</a></h4>
-                        <span>Technology • 5 min read</span>
-                    </div>
-                </div>
-                <div class="popular-post">
-                    <span class="popular-post-num">02</span>
-                    <div class="popular-post-info">
-                        <h4><a href="#">Why Emerald is the Color of 2026</a></h4>
-                        <span>Design • 3 min read</span>
-                    </div>
-                </div>
-                <div class="popular-post">
-                    <span class="popular-post-num">03</span>
-                    <div class="popular-post-info">
-                        <h4><a href="#">Sustainable Architecture Trends</a></h4>
-                        <span>Lifestyle • 8 min read</span>
-                    </div>
-                </div>
+                <?php if (!empty($trending_posts)): ?>
+                    <?php foreach ($trending_posts as $index => $post): ?>
+                        <div class="popular-post">
+                            <span class="popular-post-num"><?php echo str_pad($index + 1, 2, '0', STR_PAD_LEFT); ?></span>
+                            <div class="popular-post-info">
+                                <h4><a href="<?php echo BASE_URL; ?>/post.php?slug=<?php echo e($post['slug']); ?>"><?php echo e($post['title']); ?></a></h4>
+                                <span><?php echo e($post['category_name']); ?></span>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p style="color: var(--text-muted); font-size: 0.875rem;">No trending stories yet.</p>
+                <?php endif; ?>
             </div>
 
             <div class="sidebar-box">

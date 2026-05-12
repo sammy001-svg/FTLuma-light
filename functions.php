@@ -91,6 +91,34 @@ function get_post_by_slug($slug) {
 }
 
 /**
+ * Increment the view count for a specific post
+ */
+function increment_post_views($post_id) {
+    global $pdo;
+    $stmt = $pdo->prepare("UPDATE posts SET views = views + 1 WHERE id = ?");
+    return $stmt->execute([$post_id]);
+}
+
+/**
+ * Get the most viewed (trending) posts
+ */
+function get_trending_posts($limit = 4) {
+    global $pdo;
+    $sql = "SELECT p.*, c.name as category_name, a.name as author_name 
+            FROM posts p 
+            LEFT JOIN categories c ON p.category_id = c.id 
+            LEFT JOIN authors a ON p.author_id = a.id 
+            WHERE p.status = 'published' 
+            ORDER BY p.views DESC, p.created_at DESC 
+            LIMIT :limit";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
+
+/**
  * Format date
  */
 function format_date($date) {

@@ -3,6 +3,11 @@ require_once 'functions.php';
 
 $slug = isset($_GET['slug']) ? $_GET['slug'] : '';
 $post = get_post_by_slug($slug);
+if (!$post) {
+    header("Location: index.php");
+    exit;
+}
+increment_post_views($post['id']);
 
 $comment_success = '';
 $comment_error = '';
