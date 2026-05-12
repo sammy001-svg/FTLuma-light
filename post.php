@@ -201,13 +201,13 @@ include 'includes/header.php';
         <h1 class="post-title"><?php echo e($post['title']); ?></h1>
         <div class="author">
             <?php if ($post['author_image']): ?>
-                <img src="<?php echo (strpos($post['author_image'], 'http') === 0) ? $post['author_image'] : $post['author_image']; ?>" alt="">
+                <img src="<?php echo get_image_url($post['author_image']); ?>" alt="">
             <?php endif; ?>
             <span>By <?php echo e($post['author_name']); ?></span>
         </div>
     </header>
 
-    <img src="<?php echo e($post['featured_image']); ?>" alt="<?php echo e($post['title']); ?>" class="post-hero-img">
+    <img src="<?php echo get_image_url($post['featured_image']); ?>" alt="<?php echo e($post['title']); ?>" class="post-hero-img">
 
     <article class="post-content">
         <?php echo $post['content']; ?>
@@ -215,7 +215,7 @@ include 'includes/header.php';
         <!-- Author Bio Section -->
         <div class="post-author-box">
             <?php if ($post['author_image']): ?>
-                <img src="<?php echo (strpos($post['author_image'], 'http') === 0) ? $post['author_image'] : $post['author_image']; ?>" class="author-box-img" alt="">
+                <img src="<?php echo get_image_url($post['author_image']); ?>" class="author-box-img" alt="">
             <?php endif; ?>
             <div class="author-box-info">
                 <small style="text-transform: uppercase; letter-spacing: 0.1em; color: var(--primary-600); font-weight: 700;">Written By</small>

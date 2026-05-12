@@ -58,7 +58,7 @@ include 'includes/header.php';
                     <?php foreach ($posts as $post): ?>
                         <article class="card">
                             <div class="card-img" style="height: 220px;">
-                                <img src="<?php echo e($post['featured_image']); ?>" alt="<?php echo e($post['title']); ?>">
+                                <img src="<?php echo get_image_url($post['featured_image']); ?>" alt="<?php echo e($post['title']); ?>">
                                 <div class="card-badge"><?php echo e($post['category_name']); ?></div>
                             </div>
                             <div class="card-content">

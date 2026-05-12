@@ -32,7 +32,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <nav>
     <div class="container nav-content">
         <a href="<?php echo BASE_URL; ?>" class="logo">
-            <img src="<?php echo BASE_URL; ?>/assets/images/logo.jpg" alt="FTLuma Logo" style="height: 50px; width: auto;">
+            <img src="<?php echo get_image_url('assets/images/logo.jpg'); ?>" alt="FTLuma Logo" style="height: 50px; width: auto;">
             <span style="font-size: 1.5rem; font-weight: 800; letter-spacing: 0.1em; color: var(--primary-800); margin-left: 0.5rem;">FTLUMA</span>
         </a>
 

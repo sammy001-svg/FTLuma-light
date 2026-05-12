@@ -47,7 +47,7 @@ $upcoming_events = array_filter($all_events, function($e) { return $e['status'] 
         <!-- Featured Event -->
         <div class="featured-event">
             <div class="fe-image">
-                <img src="<?php echo $featured['image'] ?: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800'; ?>" alt="<?php echo e($featured['title']); ?>">
+                <img src="<?php echo get_image_url($featured['image']) ?: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800'; ?>" alt="<?php echo e($featured['title']); ?>">
                 <div class="fe-badge">NEXT EVENT</div>
             </div>
             <div class="fe-content">

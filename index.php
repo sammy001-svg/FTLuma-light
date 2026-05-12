@@ -43,7 +43,7 @@ include 'includes/header.php';
             <?php if (!empty($featured_posts)): ?>
                 <?php foreach ($featured_posts as $index => $post): ?>
                     <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
-                        <img src="<?php echo e($post['featured_image']); ?>" alt="<?php echo e($post['title']); ?>" class="carousel-img">
+                        <img src="<?php echo get_image_url($post['featured_image']); ?>" alt="<?php echo e($post['title']); ?>" class="carousel-img">
                         <div class="carousel-overlay">
                             <div class="carousel-caption">
                                 <span class="badge"><?php echo e($post['category_name'] ?? 'Stories'); ?></span>
@@ -108,7 +108,7 @@ include 'includes/header.php';
                     <?php foreach ($latest_posts as $post): ?>
                         <article class="card">
                             <div class="card-img" style="height: 200px;">
-                                <img src="<?php echo e($post['featured_image']); ?>" alt="News">
+                                <img src="<?php echo get_image_url($post['featured_image']); ?>" alt="News">
                             </div>
                             <div class="card-content" style="padding: 1.5rem;">
                                 <span class="card-meta"><?php echo e($post['category_name']); ?></span>

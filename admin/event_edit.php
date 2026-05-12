@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $uploaded_path = upload_image($_FILES['image']);
         if ($uploaded_path) {
-            $image = BASE_URL . '/' . $uploaded_path;
+            $image = $uploaded_path;
         }
     }
 

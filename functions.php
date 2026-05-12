@@ -104,6 +104,20 @@ function e($text) {
     return htmlspecialchars($text ?? '', ENT_QUOTES, 'UTF-8');
 }
 
+/**
+ * Get full image URL
+ */
+function get_image_url($path) {
+    if (empty($path)) return '';
+    if (strpos($path, 'http://') === 0 || strpos($path, 'https://') === 0) {
+        // If it's a full URL but contains 'localhost' and we are on a live site,
+        // we might want to try to fix it, but for now let's just return it as is
+        // unless we want to be more aggressive.
+        return $path;
+    }
+    return BASE_URL . '/' . ltrim($path, '/');
+}
+
 
 /**
  * Admin Functions

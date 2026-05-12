@@ -33,13 +33,12 @@ try {
 }
 
 // Base URL configuration
-// Base URL configuration
 if (isset($_ENV['BASE_URL']) && !empty($_ENV['BASE_URL'])) {
     define('BASE_URL', rtrim($_ENV['BASE_URL'], '/'));
 } else {
     // Detect protocol
     $protocol = 'http';
-    if ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || 
+    if ((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1)) || 
         (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')) {
         $protocol = 'https';
     }
@@ -47,14 +46,12 @@ if (isset($_ENV['BASE_URL']) && !empty($_ENV['BASE_URL'])) {
     // Detect host
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
     
-    // Detect base path
-    // We want the directory where config.php resides, relative to the document root
-    $script_dir = str_replace('\\', '/', __DIR__);
-    $doc_root = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
-    
-    // Remove document root from script dir to get the relative path
-    $base_path = str_replace($doc_root, '', $script_dir);
-    $base_path = rtrim($base_path, '/');
+    // Detect base path (useful if installed in a subdirectory)
+    $script_name = $_SERVER['SCRIPT_NAME'] ?? '';
+    $script_dir = dirname($script_name);
+    // If we're in /admin or other subdirs, we need the root
+    $base_path = preg_replace('/(\/admin|\/includes)$/', '', $script_dir);
+    $base_path = rtrim($base_path, '/\\');
     
     define('BASE_URL', $protocol . "://" . $host . $base_path);
 }
