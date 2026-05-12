@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label>Event Image</label>
                     <?php if ($event['image']): ?>
                         <div style="margin-bottom: 1rem;">
-                            <img src="<?php echo $event['image']; ?>" alt="Current Image" style="height: 100px; border-radius: 0.5rem;">
+                            <img src="<?php echo get_image_url($event['image']); ?>" alt="Current Image" style="height: 100px; border-radius: 0.5rem;">
                         </div>
                     <?php endif; ?>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: end;">

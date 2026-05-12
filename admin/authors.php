@@ -89,7 +89,7 @@ $page_title = 'Manage Authors';
                 <tr>
                     <td>
                         <?php if ($author['image']): ?>
-                            <img src="../<?php echo e($author['image']); ?>" class="author-img" alt="">
+                            <img src="<?php echo get_image_url($author['image']); ?>" class="author-img" alt="">
                         <?php else: ?>
                             <div class="author-img" style="background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #64748b;">
                                 <?php echo substr($author['name'], 0, 1); ?>

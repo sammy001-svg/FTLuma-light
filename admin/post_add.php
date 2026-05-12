@@ -10,10 +10,25 @@ $success = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Handle Image Upload
     $featured_image = $_POST['featured_image_url'] ?: '';
-    if (isset($_FILES['featured_image']) && $_FILES['featured_image']['error'] === UPLOAD_ERR_OK) {
-        $uploaded_path = upload_image($_FILES['featured_image']);
-        if ($uploaded_path) {
-            $featured_image = $uploaded_path;
+    if (isset($_FILES['featured_image']) && $_FILES['featured_image']['name'] !== '') {
+        if ($_FILES['featured_image']['error'] === UPLOAD_ERR_OK) {
+            $uploaded_path = upload_image($_FILES['featured_image']);
+            if ($uploaded_path) {
+                $featured_image = $uploaded_path;
+            } else {
+                $error = 'Failed to move uploaded file. Check folder permissions.';
+            }
+        } else {
+            $upload_errors = [
+                UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
+                UPLOAD_ERR_FORM_SIZE => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
+                UPLOAD_ERR_PARTIAL => 'The uploaded file was only partially uploaded.',
+                UPLOAD_ERR_NO_FILE => 'No file was uploaded.',
+                UPLOAD_ERR_NO_TMP_DIR => 'Missing a temporary folder.',
+                UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk.',
+                UPLOAD_ERR_EXTENSION => 'A PHP extension stopped the file upload.',
+            ];
+            $error = 'Upload error: ' . ($upload_errors[$_FILES['featured_image']['error']] ?? 'Unknown error');
         }
     }
 
