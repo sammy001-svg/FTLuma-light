@@ -120,8 +120,12 @@ include 'includes/header.php';
                                 </p>
                                 <div class="card-footer">
                                     <div class="author">
-                                        <div class="author-img"></div>
-                                        <span>John Doe</span>
+                                        <?php if ($post['author_image']): ?>
+                                            <img src="<?php echo get_image_url($post['author_image']); ?>" alt="" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                                        <?php else: ?>
+                                            <div class="author-img"></div>
+                                        <?php endif; ?>
+                                        <span><?php echo e($post['author_name'] ?? 'Luma Admin'); ?></span>
                                     </div>
                                     <a href="<?php echo BASE_URL; ?>/post.php?slug=<?php echo e($post['slug']); ?>" class="read-more">Read More →</a>
                                 </div>
