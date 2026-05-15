@@ -11,6 +11,7 @@ echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 $static_pages = [
     '' => '1.0',
     '/articles.php' => '0.9',
+    '/events.php' => '0.9',
     '/about.php' => '0.8',
     '/contact.php' => '0.8',
     '/brain-break.php' => '0.7',
