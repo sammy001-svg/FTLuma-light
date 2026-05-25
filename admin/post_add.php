@@ -215,6 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 toolbar: [
                     [{ 'header': [1, 2, 3, false] }],
                     ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }], /* Color and Background pickers */
                     ['blockquote', 'code-block'],
                     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                     ['link', 'image'],

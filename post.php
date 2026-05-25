@@ -147,6 +147,16 @@ include 'includes/header.php';
     .post-content p {
         margin-bottom: 1.5rem;
     }
+    .post-content a {
+        color: var(--primary-600) !important;
+        text-decoration: underline !important;
+        text-underline-offset: 4px !important;
+        font-weight: 600 !important;
+        transition: var(--transition) !important;
+    }
+    .post-content a:hover {
+        color: var(--primary-800) !important;
+    }
     @media (max-width: 768px) {
         .post-title {
             font-size: 2.5rem;

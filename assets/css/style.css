@@ -1253,3 +1253,15 @@ footer {
     }
 }
 
+/* Standout link color in article body */
+.post-content a {
+    color: var(--primary-600) !important;
+    text-decoration: underline !important;
+    text-underline-offset: 4px !important;
+    font-weight: 600 !important;
+    transition: var(--transition) !important;
+}
+.post-content a:hover {
+    color: var(--primary-800) !important;
+}
+
