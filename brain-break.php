@@ -170,6 +170,36 @@ include 'includes/header.php';
     pointer-events: none;
 }
 
+@media (max-width: 768px) {
+    .game-container {
+        padding: 2.25rem 1.25rem !important;
+        border-radius: 1.5rem !important;
+    }
+    .level-indicator {
+        position: relative !important;
+        top: 0 !important;
+        right: 0 !important;
+        display: inline-block !important;
+        margin-bottom: 1.5rem !important;
+    }
+    .game-status {
+        margin-bottom: 2rem !important;
+        font-size: 1.35rem !important;
+        line-height: 1.3 !important;
+    }
+    .score-board {
+        gap: 1.25rem !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+    .score-item {
+        font-size: 0.95rem !important;
+    }
+    main .container, main {
+        margin-bottom: 4rem !important;
+    }
+}
+
 @media (max-width: 600px) {
     .cups-wrapper {
         height: 150px;

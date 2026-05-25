@@ -43,12 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'Upload error: ' . ($upload_errors[$_FILES['featured_image']['error']] ?? 'Unknown error');
         }
     }
+    $slug = $_POST['slug'] ?: $_POST['title'];
+    $unique_slug = generate_unique_slug($slug, $id);
 
     $data = [
         'category_id' => $_POST['category_id'],
         'author_id' => $_POST['author_id'],
         'title' => $_POST['title'],
-        'slug' => $_POST['slug'] ?: strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $_POST['title']))),
+        'slug' => $unique_slug,
         'content' => $_POST['content'],
         'excerpt' => $_POST['excerpt'],
         'featured_image' => $featured_image,
@@ -61,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Refresh post data
         $post = get_post_by_id_admin($id);
     } else {
-        $error = 'Failed to update post. Slug might already exist.';
+        $error = 'Failed to update post. An unexpected database error occurred.';
     }
 }
 

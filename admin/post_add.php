@@ -32,11 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    $slug = $_POST['slug'] ?: $_POST['title'];
+    $unique_slug = generate_unique_slug($slug);
+
     $data = [
         'category_id' => $_POST['category_id'],
         'author_id' => $_POST['author_id'],
         'title' => $_POST['title'],
-        'slug' => $_POST['slug'] ?: strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $_POST['title']))),
+        'slug' => $unique_slug,
         'content' => $_POST['content'],
         'excerpt' => $_POST['excerpt'],
         'featured_image' => $featured_image,
@@ -47,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (create_post($data)) {
         $success = 'Post created successfully!';
     } else {
-        $error = 'Failed to create post. Slug might already exist.';
+        $error = 'Failed to create post. An unexpected database error occurred.';
     }
 }
 ?>

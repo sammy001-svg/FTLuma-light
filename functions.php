@@ -200,22 +200,74 @@ function delete_category($id) {
 }
 
 // Post Management
+function generate_unique_slug($title, $exclude_id = null) {
+    global $pdo;
+    if (!$pdo) return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
+    
+    // Clean and generate initial slug
+    $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
+    $slug = preg_replace('/-+/', '-', $slug);
+    $slug = trim($slug, '-');
+    
+    if (empty($slug)) {
+        $slug = 'post';
+    }
+    
+    $original_slug = $slug;
+    $count = 1;
+    
+    while (true) {
+        $sql = "SELECT COUNT(*) FROM posts WHERE slug = :slug";
+        if ($exclude_id !== null) {
+            $sql .= " AND id != :exclude_id";
+        }
+        
+        $stmt = $pdo->prepare($sql);
+        $params = ['slug' => $slug];
+        if ($exclude_id !== null) {
+            $params['exclude_id'] = $exclude_id;
+        }
+        
+        $stmt->execute($params);
+        if ($stmt->fetchColumn() == 0) {
+            break;
+        }
+        
+        $slug = $original_slug . '-' . $count;
+        $count++;
+    }
+    
+    return $slug;
+}
+
 function create_post($data) {
     global $pdo;
-    $sql = "INSERT INTO posts (category_id, author_id, title, slug, content, excerpt, featured_image, status, featured) 
-            VALUES (:category_id, :author_id, :title, :slug, :content, :excerpt, :featured_image, :status, :featured)";
-    $stmt = $pdo->prepare($sql);
-    return $stmt->execute($data);
+    if (!$pdo) return false;
+    try {
+        $sql = "INSERT INTO posts (category_id, author_id, title, slug, content, excerpt, featured_image, status, featured) 
+                VALUES (:category_id, :author_id, :title, :slug, :content, :excerpt, :featured_image, :status, :featured)";
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute($data);
+    } catch (PDOException $e) {
+        error_log("Error creating post: " . $e->getMessage());
+        return false;
+    }
 }
 
 function update_post($id, $data) {
     global $pdo;
-    $data['id'] = $id;
-    $sql = "UPDATE posts SET category_id = :category_id, author_id = :author_id, title = :title, slug = :slug, 
-            content = :content, excerpt = :excerpt, featured_image = :featured_image, 
-            status = :status, featured = :featured WHERE id = :id";
-    $stmt = $pdo->prepare($sql);
-    return $stmt->execute($data);
+    if (!$pdo) return false;
+    try {
+        $data['id'] = $id;
+        $sql = "UPDATE posts SET category_id = :category_id, author_id = :author_id, title = :title, slug = :slug, 
+                content = :content, excerpt = :excerpt, featured_image = :featured_image, 
+                status = :status, featured = :featured WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute($data);
+    } catch (PDOException $e) {
+        error_log("Error updating post: " . $e->getMessage());
+        return false;
+    }
 }
 
 function delete_post($id) {

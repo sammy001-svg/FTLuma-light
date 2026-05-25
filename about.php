@@ -146,13 +146,49 @@ include 'includes/header.php';
     }
     @media (max-width: 992px) {
         .founder-section {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr !important;
+        }
+        .founder-image {
+            height: 350px !important;
+            min-height: 350px !important;
+        }
+        .founder-content {
+            padding: 2.5rem 1.5rem !important;
         }
         .mission-vision-aim {
-            padding: 3rem;
+            padding: 2.5rem 1.5rem !important;
+            border-radius: 1.75rem !important;
+            margin-top: 2.5rem !important;
+        }
+        .mva-item h2 {
+            font-size: 1.85rem !important;
+        }
+        .mva-item ul {
+            columns: 1 !important;
+        }
+        .about-hero {
+            padding: 4rem 0 3rem !important;
         }
         .about-hero h1 {
-            font-size: 3rem;
+            font-size: 2.25rem !important;
+            line-height: 1.2;
+        }
+        .about-hero p {
+            font-size: 1.1rem !important;
+        }
+        /* Overrides for large inline margins and padding */
+        main .container, main {
+            margin-bottom: 4rem !important;
+        }
+        div[style*="margin-top: 10rem"] {
+            margin-top: 4rem !important;
+        }
+        div[style*="margin-top: 8rem"] {
+            margin-top: 3.5rem !important;
+        }
+        div[style*="padding: 5rem"] {
+            padding: 2.5rem 1.5rem !important;
+            border-radius: 1.75rem !important;
         }
     }
 </style>
