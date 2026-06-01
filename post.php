@@ -4,7 +4,8 @@ require_once 'functions.php';
 $slug = isset($_GET['slug']) ? $_GET['slug'] : '';
 $post = get_post_by_slug($slug);
 if (!$post) {
-    header("Location: index.php");
+    http_response_code(404);
+    include '404.php';
     exit;
 }
 increment_post_views($post['id']);
@@ -41,6 +42,7 @@ if (!$post) {
 }
 
 $page_title = $post['title'];
+$canonical_url = BASE_URL . '/post.php?slug=' . urlencode($post['slug']);
 include 'includes/header.php';
 ?>
 

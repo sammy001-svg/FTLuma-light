@@ -19,6 +19,7 @@ $page_title = 'Reservations for ' . $event['title'];
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Reservations | Admin</title>
     <link rel="stylesheet" href="../assets/css/style.css">

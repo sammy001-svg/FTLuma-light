@@ -19,7 +19,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <title><?php echo isset($page_title) ? $page_title . ' | FTLuma-Light' : 'FTLuma-Light - Modern & Elegant Stories'; ?></title>
     <meta name="description" content="<?php echo isset($page_description) ? $page_description : 'Discover insightful stories on technology, design, and lifestyle.'; ?>">
     <meta name="google-site-verification" content="oBsWMvQBm-JE3wihRjPlvnxBG0rx3jkrLxec5K2Q8Aw" />
-    
+    <?php
+    $canonical = isset($canonical_url) ? $canonical_url : BASE_URL . strtok($_SERVER['REQUEST_URI'], '?');
+    ?>
+    <link rel="canonical" href="<?php echo htmlspecialchars($canonical); ?>">
+
     <!-- CSS -->
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">

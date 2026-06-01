@@ -10,3 +10,6 @@ RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
 # Prevent Directory Listing
 Options -Indexes
+
+# Custom error pages
+ErrorDocument 404 /404.php

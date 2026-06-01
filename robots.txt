@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /config.php
+Disallow: /functions.php
+Disallow: /sitemap.php
+
+Sitemap: https://ftluma-light.com/sitemap.xml
