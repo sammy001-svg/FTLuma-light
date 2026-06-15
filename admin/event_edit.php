@@ -80,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <li><a href="categories.php">Categories</a></li>
             <li><a href="events.php" class="active">Upcoming Events</a></li>
             <li><a href="reservations.php">Reservations</a></li>
+            <li><a href="subscribers.php">Subscribers</a></li>
             <li><a href="../index.php" target="_blank">View Site ↗</a></li>
             <li style="margin-top: 5rem;"><a href="logout.php" style="color: #f87171;">Logout</a></li>
         </ul>

@@ -176,9 +176,22 @@ include 'includes/header.php';
         <aside class="sidebar">
             <div class="sidebar-box newsletter-box">
                 <h3 class="sidebar-title">Stay Informed</h3>
-                <p style="font-size: 0.875rem; margin-bottom: 1.5rem;">Join 50,000+ subscribers for weekly insights delivered to your inbox.</p>
-                <input type="email" placeholder="Your email address">
-                <button>Subscribe Now</button>
+                <p style="font-size: 0.875rem; margin-bottom: 1.5rem;">Join our subscribers for weekly insights delivered to your inbox.</p>
+
+                <?php if (!empty($_SESSION['newsletter_success'])): ?>
+                    <div style="background:#dcfce7;color:#15803d;padding:0.75rem 1rem;border-radius:0.75rem;margin-bottom:1rem;font-size:0.875rem;font-weight:600;">
+                        <?php echo e($_SESSION['newsletter_success']); unset($_SESSION['newsletter_success']); ?>
+                    </div>
+                <?php elseif (!empty($_SESSION['newsletter_error'])): ?>
+                    <div style="background:#fee2e2;color:#b91c1c;padding:0.75rem 1rem;border-radius:0.75rem;margin-bottom:1rem;font-size:0.875rem;font-weight:600;">
+                        <?php echo e($_SESSION['newsletter_error']); unset($_SESSION['newsletter_error']); ?>
+                    </div>
+                <?php endif; ?>
+
+                <form action="<?php echo BASE_URL; ?>/subscribe.php" method="POST">
+                    <input type="email" name="email" placeholder="Your email address" required>
+                    <button type="submit">Subscribe Now</button>
+                </form>
             </div>
 
             <div class="sidebar-box">

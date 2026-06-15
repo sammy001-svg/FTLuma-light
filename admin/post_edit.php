@@ -95,7 +95,7 @@ $page_title = 'Edit Post';
 
         /* Quill Editor Adjustments */
         #editor-container {
-            height: 400px;
+            min-height: 500px;
             background: white;
             border-bottom-left-radius: 0.75rem;
             border-bottom-right-radius: 0.75rem;
@@ -104,6 +104,22 @@ $page_title = 'Edit Post';
             border-top-left-radius: 0.75rem;
             border-top-right-radius: 0.75rem;
             background: #f8fafc;
+        }
+        .ql-editor img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+        #upload-progress {
+            display: none;
+            padding: 0.75rem 1rem;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.5rem;
+            color: #1d4ed8;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
         }
     </style>
 </head>
@@ -120,6 +136,7 @@ $page_title = 'Edit Post';
             <li><a href="authors.php">Authors</a></li>
             <li><a href="events.php">Upcoming Events</a></li>
             <li><a href="reservations.php">Reservations</a></li>
+            <li><a href="subscribers.php">Subscribers</a></li>
             <li><a href="../index.php" target="_blank">View Site ↗</a></li>
             <li style="margin-top: 5rem;"><a href="logout.php" style="color: #f87171;">Logout</a></li>
         </ul>
@@ -204,9 +221,8 @@ $page_title = 'Edit Post';
 
                 <div class="form-group">
                     <label for="content">Full Content</label>
-                    <!-- Quill Container -->
                     <div id="editor-container"><?php echo $post['content']; ?></div>
-                    <!-- Hidden textarea to store Quill content for PHP -->
+                    <div id="upload-progress">Uploading image...</div>
                     <textarea name="content" id="content-hidden" style="display:none;"></textarea>
                 </div>
 
@@ -232,27 +248,73 @@ $page_title = 'Edit Post';
     <!-- Quill JS -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
+        function quillImageUploader() {
+            var input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.click();
+
+            input.onchange = function () {
+                var file = input.files[0];
+                if (!file) return;
+
+                var progress = document.getElementById('upload-progress');
+                progress.style.display = 'block';
+
+                var fd = new FormData();
+                fd.append('image', file);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'upload_image_ajax.php', true);
+                xhr.onload = function () {
+                    progress.style.display = 'none';
+                    if (xhr.status === 200) {
+                        try {
+                            var res = JSON.parse(xhr.responseText);
+                            if (res.url) {
+                                var range = quill.getSelection(true);
+                                var index = range ? range.index : quill.getLength();
+                                quill.insertEmbed(index, 'image', res.url);
+                                quill.setSelection(index + 1);
+                            } else {
+                                alert('Image upload failed: ' + (res.error || 'Unknown error'));
+                            }
+                        } catch (e) {
+                            alert('Unexpected server response during image upload');
+                        }
+                    } else {
+                        alert('Image upload failed (HTTP ' + xhr.status + ')');
+                    }
+                };
+                xhr.onerror = function () {
+                    progress.style.display = 'none';
+                    alert('Network error during image upload');
+                };
+                xhr.send(fd);
+            };
+        }
+
         var quill = new Quill('#editor-container', {
             theme: 'snow',
             modules: {
-                toolbar: [
-                    [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'color': [] }, { 'background': [] }], /* Color and Background pickers */
-                    ['blockquote', 'code-block'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['link', 'image'],
-                    ['clean']
-                ]
+                toolbar: {
+                    container: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'color': [] }, { 'background': [] }],
+                        ['blockquote', 'code-block'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        ['link', 'image'],
+                        ['clean']
+                    ],
+                    handlers: { image: quillImageUploader }
+                }
             }
         });
 
-        // Sync Quill content to hidden textarea before submit
-        var form = document.getElementById('postForm');
-        form.onsubmit = function() {
+        document.getElementById('postForm').addEventListener('submit', function () {
             document.getElementById('content-hidden').value = quill.root.innerHTML;
-            return true;
-        };
+        });
     </script>
 </body>
 </html>

@@ -55,6 +55,7 @@ $page_title = 'Add Author';
             <li><a href="authors.php" class="active">Authors</a></li>
             <li><a href="events.php">Upcoming Events</a></li>
             <li><a href="reservations.php">Reservations</a></li>
+            <li><a href="subscribers.php">Subscribers</a></li>
             <li><a href="../index.php" target="_blank">View Site ↗</a></li>
             <li style="margin-top: 5rem;"><a href="logout.php" style="color: #f87171;">Logout</a></li>
         </ul>

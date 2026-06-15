@@ -516,6 +516,38 @@ function save_comment($post_id, $data) {
 }
 
 /**
+ * Newsletter Subscribers
+ */
+function subscribe_newsletter($email) {
+    global $pdo;
+    if (!$pdo) return 'error';
+    try {
+        $stmt = $pdo->prepare("INSERT INTO subscribers (email) VALUES (?)");
+        $stmt->execute([$email]);
+        return 'subscribed';
+    } catch (PDOException $e) {
+        // MySQL error 23000 = duplicate entry
+        if ($e->getCode() === '23000') {
+            return 'duplicate';
+        }
+        return 'error';
+    }
+}
+
+function get_subscribers() {
+    global $pdo;
+    if (!$pdo) return [];
+    $stmt = $pdo->query("SELECT * FROM subscribers ORDER BY created_at DESC");
+    return $stmt->fetchAll();
+}
+
+function delete_subscriber($id) {
+    global $pdo;
+    $stmt = $pdo->prepare("DELETE FROM subscribers WHERE id = ?");
+    return $stmt->execute([$id]);
+}
+
+/**
  * Get approved comments for a post
  */
 function get_comments($post_id) {
