@@ -550,6 +550,39 @@ function delete_subscriber($id) {
 }
 
 /**
+ * Estimate reading time from HTML content
+ */
+function reading_time($content) {
+    $words   = str_word_count(strip_tags($content));
+    $minutes = max(1, (int) round($words / 200));
+    return $minutes . ' min read';
+}
+
+/**
+ * Fetch posts in the same category, excluding the current post
+ */
+function get_related_posts($post_id, $category_id, $limit = 3) {
+    global $pdo;
+    if (!$pdo) return [];
+    $stmt = $pdo->prepare("
+        SELECT p.*, c.name as category_name, a.name as author_name, a.image as author_image
+        FROM posts p
+        LEFT JOIN categories c ON p.category_id = c.id
+        LEFT JOIN authors a ON p.author_id = a.id
+        WHERE p.status = 'published'
+          AND p.category_id = :category_id
+          AND p.id != :post_id
+        ORDER BY p.created_at DESC
+        LIMIT :limit
+    ");
+    $stmt->bindValue(':category_id', (int)$category_id, PDO::PARAM_INT);
+    $stmt->bindValue(':post_id',     (int)$post_id,     PDO::PARAM_INT);
+    $stmt->bindValue(':limit',       (int)$limit,       PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
+
+/**
  * Get approved comments for a post
  */
 function get_comments($post_id) {

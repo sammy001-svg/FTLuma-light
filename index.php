@@ -114,7 +114,7 @@ include 'includes/header.php';
                                 <img src="<?php echo get_image_url($post['featured_image']); ?>" alt="News" loading="lazy">
                             </div>
                             <div class="card-content" style="padding: 1.5rem;">
-                                <span class="card-meta"><?php echo e($post['category_name']); ?></span>
+                                <span class="card-meta"><?php echo e($post['category_name']); ?> · <?php echo reading_time($post['content']); ?></span>
                                 <h3 class="card-title" style="font-size: 1.25rem;">
                                     <a href="<?php echo BASE_URL; ?>/post.php?slug=<?php echo e($post['slug']); ?>"><?php echo e($post['title']); ?></a>
                                 </h3>

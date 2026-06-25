@@ -252,7 +252,146 @@ include 'includes/header.php';
         font-weight: 700;
         color: var(--primary-900);
     }
+    .reading-time-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        background: var(--bg-light);
+        border: 1px solid var(--border);
+        border-radius: 2rem;
+        padding: 0.2rem 0.75rem;
+        margin-left: 0.5rem;
+    }
+
+    /* Share Bar */
+    .share-bar {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        margin: 3rem 0;
+        padding: 2rem;
+        background: var(--bg-light);
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
+    }
+    .share-label {
+        font-weight: 700;
+        color: var(--primary-900);
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        white-space: nowrap;
+    }
+    .share-buttons {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+    .share-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.25rem;
+        border-radius: 2rem;
+        font-size: 0.875rem;
+        font-weight: 700;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    .share-twitter  { background: #000; color: #fff; }
+    .share-facebook { background: #1877f2; color: #fff; }
+    .share-linkedin { background: #0a66c2; color: #fff; }
+    .share-copy     { background: var(--bg-white); color: var(--primary-800); border: 1px solid var(--border); }
+    .share-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+    .share-copy.copied { background: #dcfce7; color: #15803d; border-color: #bbf7d0; }
+
+    /* Related Posts */
+    .related-posts-section {
+        max-width: 720px;
+        margin: 5rem auto 0;
+        padding-top: 4rem;
+        border-top: 1px solid var(--border);
+    }
+    .related-posts-title {
+        font-size: 1.75rem;
+        margin-bottom: 2rem;
+    }
+    .related-posts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+    .related-card {
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        background: var(--bg-white);
+        border: 1px solid var(--border);
+        border-radius: 1.25rem;
+        overflow: hidden;
+        transition: var(--transition);
+    }
+    .related-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--primary-200);
+    }
+    .related-card-img {
+        height: 140px;
+        overflow: hidden;
+    }
+    .related-card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+    .related-card:hover .related-card-img img { transform: scale(1.05); }
+    .related-card-body {
+        padding: 1.25rem;
+        flex: 1;
+    }
+    .related-card-meta {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    .related-card-body h3 {
+        font-size: 1rem;
+        line-height: 1.4;
+        color: var(--primary-900);
+        margin-bottom: 0.5rem;
+    }
+    .related-card-body p {
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+        margin: 0;
+    }
 </style>
+
+<script>
+function copyArticleLink(url) {
+    var btn  = document.getElementById('copyLinkBtn');
+    var text = document.getElementById('copyBtnText');
+    navigator.clipboard.writeText(url).then(function() {
+        btn.classList.add('copied');
+        text.textContent = 'Copied!';
+        setTimeout(function() {
+            btn.classList.remove('copied');
+            text.textContent = 'Copy Link';
+        }, 2000);
+    });
+}
+</script>
 
 <main class="container">
     <header class="post-header">
@@ -263,6 +402,10 @@ include 'includes/header.php';
                 <img src="<?php echo get_image_url($post['author_image']); ?>" alt="">
             <?php endif; ?>
             <span>By <?php echo e($post['author_name']); ?></span>
+            <span class="reading-time-badge">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <?php echo reading_time($post['content']); ?>
+            </span>
         </div>
     </header>
 
@@ -270,6 +413,29 @@ include 'includes/header.php';
 
     <article class="post-content">
         <?php echo $post['content']; ?>
+
+        <!-- Share Bar -->
+        <div class="share-bar">
+            <span class="share-label">Share this article</span>
+            <div class="share-buttons">
+                <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode($canonical_url); ?>&text=<?php echo urlencode($post['title']); ?>" target="_blank" rel="noopener noreferrer" class="share-btn share-twitter" aria-label="Share on X / Twitter">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    X
+                </a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode($canonical_url); ?>" target="_blank" rel="noopener noreferrer" class="share-btn share-facebook" aria-label="Share on Facebook">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.268h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+                    Facebook
+                </a>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode($canonical_url); ?>&title=<?php echo urlencode($post['title']); ?>" target="_blank" rel="noopener noreferrer" class="share-btn share-linkedin" aria-label="Share on LinkedIn">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    LinkedIn
+                </a>
+                <button class="share-btn share-copy" id="copyLinkBtn" aria-label="Copy link" onclick="copyArticleLink('<?php echo e($canonical_url); ?>')">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                    <span id="copyBtnText">Copy Link</span>
+                </button>
+            </div>
+        </div>
 
         <!-- Author Bio Section -->
         <div class="post-author-box">
@@ -283,6 +449,32 @@ include 'includes/header.php';
             </div>
         </div>
     </article>
+
+    <!-- Related Posts -->
+    <?php
+    $related_posts = (!empty($post['category_id']) && !empty($post['id']))
+        ? get_related_posts($post['id'], $post['category_id'], 3)
+        : [];
+    ?>
+    <?php if (!empty($related_posts)): ?>
+    <section class="related-posts-section">
+        <h2 class="related-posts-title">More in <span class="text-gradient"><?php echo e($post['category_name']); ?></span></h2>
+        <div class="related-posts-grid">
+            <?php foreach ($related_posts as $rel): ?>
+                <a href="<?php echo BASE_URL; ?>/post.php?slug=<?php echo e($rel['slug']); ?>" class="related-card">
+                    <div class="related-card-img">
+                        <img src="<?php echo get_image_url($rel['featured_image']); ?>" alt="<?php echo e($rel['title']); ?>" loading="lazy">
+                    </div>
+                    <div class="related-card-body">
+                        <span class="related-card-meta"><?php echo format_date($rel['created_at']); ?> · <?php echo reading_time($rel['content']); ?></span>
+                        <h3><?php echo e($rel['title']); ?></h3>
+                        <p><?php echo e(substr($rel['excerpt'] ?: strip_tags($rel['content']), 0, 100)); ?>…</p>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </section>
+    <?php endif; ?>
 
     <!-- Comments Section -->
     <section class="comments-section">

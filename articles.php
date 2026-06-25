@@ -104,7 +104,7 @@ include 'includes/header.php';
                                 <div class="card-badge"><?php echo e($post['category_name']); ?></div>
                             </div>
                             <div class="card-content">
-                                <span class="card-meta"><?php echo format_date($post['created_at']); ?></span>
+                                <span class="card-meta"><?php echo format_date($post['created_at']); ?> · <?php echo reading_time($post['content']); ?></span>
                                 <h3 class="card-title">
                                     <a href="post.php?slug=<?php echo e($post['slug']); ?>"><?php echo e($post['title']); ?></a>
                                 </h3>
