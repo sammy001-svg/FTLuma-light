@@ -549,6 +549,49 @@ function delete_subscriber($id) {
     return $stmt->execute([$id]);
 }
 
+function get_subscribers_count() {
+    global $pdo;
+    if (!$pdo) return 0;
+    return (int) $pdo->query("SELECT COUNT(*) FROM subscribers")->fetchColumn();
+}
+
+function get_unread_messages_count() {
+    global $pdo;
+    if (!$pdo) return 0;
+    try {
+        return (int) $pdo->query("SELECT COUNT(*) FROM messages WHERE status = 'unread'")->fetchColumn();
+    } catch (PDOException $e) { return 0; }
+}
+
+function get_pending_comments_count() {
+    global $pdo;
+    if (!$pdo) return 0;
+    try {
+        return (int) $pdo->query("SELECT COUNT(*) FROM comments WHERE status != 'approved'")->fetchColumn();
+    } catch (PDOException $e) { return 0; }
+}
+
+function get_published_posts_count() {
+    global $pdo;
+    if (!$pdo) return 0;
+    return (int) $pdo->query("SELECT COUNT(*) FROM posts WHERE status = 'published'")->fetchColumn();
+}
+
+function get_total_views() {
+    global $pdo;
+    if (!$pdo) return 0;
+    return (int) $pdo->query("SELECT COALESCE(SUM(views), 0) FROM posts")->fetchColumn();
+}
+
+function get_recent_messages($limit = 4) {
+    global $pdo;
+    if (!$pdo) return [];
+    $stmt = $pdo->prepare("SELECT * FROM messages ORDER BY created_at DESC LIMIT :limit");
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
+
 /**
  * Estimate reading time from HTML content
  */
