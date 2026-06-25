@@ -41,8 +41,50 @@ if (!$post) {
     ];
 }
 
-$page_title = $post['title'];
-$canonical_url = BASE_URL . '/post.php?slug=' . urlencode($post['slug']);
+$page_title       = $post['title'];
+$canonical_url    = BASE_URL . '/post.php?slug=' . urlencode($post['slug']);
+$page_description = !empty($post['excerpt'])
+    ? $post['excerpt']
+    : substr(strip_tags($post['content']), 0, 160);
+$og_type          = 'article';
+$og_image         = get_image_url($post['featured_image']);
+$og_title         = $post['title'];
+$og_description   = $page_description;
+
+$structured_data = json_encode([
+    '@context'        => 'https://schema.org',
+    '@type'           => 'Article',
+    'headline'        => $post['title'],
+    'description'     => $page_description,
+    'image'           => get_image_url($post['featured_image']),
+    'datePublished'   => date('c', strtotime($post['created_at'])),
+    'dateModified'    => date('c', strtotime($post['updated_at'] ?? $post['created_at'])),
+    'inLanguage'      => 'en-US',
+    'keywords'        => $post['category_name'] ?? '',
+    'url'             => $canonical_url,
+    'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $canonical_url],
+    'author' => [
+        '@type' => 'Person',
+        'name'  => $post['author_name'],
+    ],
+    'publisher' => [
+        '@type' => 'Organization',
+        'name'  => 'FTLuma',
+        'logo'  => [
+            '@type' => 'ImageObject',
+            'url'   => BASE_URL . '/assets/images/logo.jpg',
+        ],
+    ],
+    'breadcrumb' => [
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => [
+            ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home',     'item' => BASE_URL],
+            ['@type' => 'ListItem', 'position' => 2, 'name' => 'Articles', 'item' => BASE_URL . '/articles.php'],
+            ['@type' => 'ListItem', 'position' => 3, 'name' => $post['title'], 'item' => $canonical_url],
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
 include 'includes/header.php';
 ?>
 
@@ -232,7 +274,7 @@ include 'includes/header.php';
         <!-- Author Bio Section -->
         <div class="post-author-box">
             <?php if ($post['author_image']): ?>
-                <img src="<?php echo get_image_url($post['author_image']); ?>" class="author-box-img" alt="">
+                <img src="<?php echo get_image_url($post['author_image']); ?>" class="author-box-img" alt="" loading="lazy">
             <?php endif; ?>
             <div class="author-box-info">
                 <small style="text-transform: uppercase; letter-spacing: 0.1em; color: var(--primary-600); font-weight: 700;">Written By</small>

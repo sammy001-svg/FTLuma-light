@@ -1,7 +1,18 @@
 <?php
 require_once 'functions.php';
 
-$page_title = 'Brain Break | Lucky Cup Game';
+$page_title       = 'Brain Break – Lucky Cup Game | FTLuma';
+$page_description = 'Take a mental breather with FTLuma\'s Brain Break. Play the Lucky Cup mini-game, test your focus, and come back sharper than ever.';
+
+$structured_data = json_encode([
+    '@context' => 'https://schema.org',
+    '@type'    => 'BreadcrumbList',
+    'itemListElement' => [
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home',        'item' => BASE_URL],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'Brain Break', 'item' => BASE_URL . '/brain-break.php'],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
 include 'includes/header.php';
 ?>
 

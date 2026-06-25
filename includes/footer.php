@@ -17,9 +17,10 @@
                 <h4>Quick Links</h4>
                 <ul>
                     <li><a href="<?php echo BASE_URL; ?>">Home</a></li>
-                    <li><a href="#">Categories</a></li>
+                    <li><a href="<?php echo BASE_URL; ?>/articles.php">Articles</a></li>
                     <li><a href="<?php echo BASE_URL; ?>/about.php">About Us</a></li>
                     <li><a href="<?php echo BASE_URL; ?>/contact.php">Contact</a></li>
+                    <li><a href="<?php echo BASE_URL; ?>/sitemap.xml">Sitemap</a></li>
                 </ul>
             </div>
             

@@ -1,7 +1,18 @@
 <?php
 require_once 'functions.php';
 
-$page_title = 'Disclaimer - FTLuma';
+$page_title       = 'Disclaimer | FTLuma';
+$page_description = 'Read FTLuma\'s Disclaimer. Our content is for informational purposes only and does not constitute financial advice or create a professional-client relationship.';
+
+$structured_data = json_encode([
+    '@context' => 'https://schema.org',
+    '@type'    => 'BreadcrumbList',
+    'itemListElement' => [
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home',       'item' => BASE_URL],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'Disclaimer', 'item' => BASE_URL . '/disclaimer.php'],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
 include 'includes/header.php';
 ?>
 

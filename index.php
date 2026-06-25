@@ -1,9 +1,9 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 require_once 'functions.php';
 
-$page_title = 'Global News & Perspectives';
+$page_title       = 'FTLuma – Financial Clarity for Your 20s';
+$page_description = 'FTLuma helps young adults build financial confidence. Get modern, clear, and actionable money insights — articles, events, and tools built for your 20s.';
+$og_type          = 'website';
 $categories = get_categories();
 $latest_posts = get_latest_posts(8);
 $featured_posts = get_featured_posts(5);
@@ -111,7 +111,7 @@ include 'includes/header.php';
                     <?php foreach ($latest_posts as $post): ?>
                         <article class="card">
                             <div class="card-img" style="height: 200px;">
-                                <img src="<?php echo get_image_url($post['featured_image']); ?>" alt="News">
+                                <img src="<?php echo get_image_url($post['featured_image']); ?>" alt="News" loading="lazy">
                             </div>
                             <div class="card-content" style="padding: 1.5rem;">
                                 <span class="card-meta"><?php echo e($post['category_name']); ?></span>
@@ -124,7 +124,7 @@ include 'includes/header.php';
                                 <div class="card-footer">
                                     <div class="author">
                                         <?php if ($post['author_image']): ?>
-                                            <img src="<?php echo get_image_url($post['author_image']); ?>" alt="" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                                            <img src="<?php echo get_image_url($post['author_image']); ?>" alt="" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" loading="lazy">
                                         <?php else: ?>
                                             <div class="author-img"></div>
                                         <?php endif; ?>
@@ -209,6 +209,16 @@ include 'includes/header.php';
                 <?php else: ?>
                     <p style="color: var(--text-muted); font-size: 0.875rem;">No trending stories yet.</p>
                 <?php endif; ?>
+            </div>
+
+            <div class="sidebar-box">
+                <h3 class="sidebar-title">Search Articles</h3>
+                <form action="<?php echo BASE_URL; ?>/articles.php" method="GET" style="display:flex;gap:0.5rem;">
+                    <input type="text" name="q" placeholder="Keywords…" required style="flex:1;padding:0.625rem 1rem;border:1px solid var(--border);border-radius:0.625rem;font-size:0.9rem;outline:none;background:var(--bg-light);">
+                    <button type="submit" style="background:var(--primary-700);color:white;border:none;border-radius:0.625rem;padding:0 1rem;cursor:pointer;font-size:1rem;transition:var(--transition);" aria-label="Search">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </button>
+                </form>
             </div>
 
             <div class="sidebar-box">

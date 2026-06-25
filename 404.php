@@ -3,6 +3,7 @@ http_response_code(404);
 require_once 'functions.php';
 $page_title = 'Page Not Found';
 $page_description = 'The page you are looking for could not be found.';
+$robots_noindex = true;
 include 'includes/header.php';
 ?>
 

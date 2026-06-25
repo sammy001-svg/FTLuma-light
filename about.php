@@ -1,7 +1,37 @@
 <?php
 require_once 'functions.php';
 
-$page_title = 'About FTLuma - Financial Clarity for Your 20s';
+$page_title       = 'About FTLuma – Financial Clarity for Your 20s';
+$page_description = 'Learn about FTLuma and our mission to bring financial clarity to young adults. Founded by Fiona Tiany Bango, we help you build a confident, intentional relationship with money.';
+
+$structured_data = json_encode([
+    '@context' => 'https://schema.org',
+    '@graph'   => [
+        [
+            '@type'       => 'AboutPage',
+            '@id'         => BASE_URL . '/about.php',
+            'url'         => BASE_URL . '/about.php',
+            'name'        => 'About FTLuma',
+            'description' => 'FTLuma brings financial clarity and actionable insights to young adults in their 20s.',
+            'breadcrumb'  => [
+                '@type' => 'BreadcrumbList',
+                'itemListElement' => [
+                    ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home',  'item' => BASE_URL],
+                    ['@type' => 'ListItem', 'position' => 2, 'name' => 'About', 'item' => BASE_URL . '/about.php'],
+                ],
+            ],
+        ],
+        [
+            '@type'    => 'Person',
+            '@id'      => BASE_URL . '/#founder',
+            'name'     => 'Fiona Tiany Bango',
+            'jobTitle' => 'Founder',
+            'worksFor' => ['@id' => BASE_URL . '/#organization'],
+            'url'      => BASE_URL . '/about.php',
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
 include 'includes/header.php';
 ?>
 

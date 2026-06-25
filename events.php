@@ -19,11 +19,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reserve_event'])) {
     }
 }
 
-$page_title = 'Upcoming Events | FTLuma-Light';
-include 'includes/header.php';
+// Fetch events BEFORE header so structured data can be built
+$all_events      = get_all_events();
+$upcoming_events = array_values(array_filter($all_events, function($ev) { return $ev['status'] === 'upcoming'; }));
+$featured_event  = $upcoming_events[0] ?? null;
 
-$all_events = get_all_events();
-$upcoming_events = array_filter($all_events, function($e) { return $e['status'] === 'upcoming'; });
+$page_title       = 'Upcoming Events | FTLuma';
+$page_description = 'Discover upcoming events from FTLuma. Join our financial wellness workshops, live sessions, and community events to sharpen your money mindset.';
+$og_image         = (!empty($featured_event['image'])) ? get_image_url($featured_event['image']) : BASE_URL . '/assets/images/logo.jpg';
+
+// Build Event schema for up to 5 upcoming events
+$event_graph = [];
+foreach (array_slice($upcoming_events, 0, 5) as $ev) {
+    $start_date = $ev['event_date'];
+    if (!empty($ev['event_time'])) {
+        $start_date .= 'T' . $ev['event_time'];
+    }
+    $event_graph[] = [
+        '@type'               => 'Event',
+        'name'                => $ev['title'],
+        'description'         => $ev['description'],
+        'startDate'           => $start_date,
+        'eventStatus'         => 'https://schema.org/EventScheduled',
+        'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+        'location' => [
+            '@type' => 'Place',
+            'name'  => $ev['location'],
+        ],
+        'organizer' => [
+            '@type' => 'Organization',
+            'name'  => 'FTLuma',
+            'url'   => BASE_URL,
+        ],
+        'url' => BASE_URL . '/events.php',
+    ];
+}
+if (!empty($event_graph)) {
+    $structured_data = json_encode(
+        ['@context' => 'https://schema.org', '@graph' => $event_graph],
+        JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+    );
+}
+
+include 'includes/header.php';
+// $all_events and $upcoming_events are already in scope below
 ?>
 
 <section class="hero" style="padding: 6rem 0; background: var(--primary-900); color: white;">

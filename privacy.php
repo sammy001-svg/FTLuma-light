@@ -1,7 +1,18 @@
 <?php
 require_once 'functions.php';
 
-$page_title = 'Privacy Policy - FTLuma';
+$page_title       = 'Privacy Policy | FTLuma';
+$page_description = 'Read FTLuma\'s Privacy Policy to understand how we collect, use, and protect your personal data in compliance with applicable privacy laws.';
+
+$structured_data = json_encode([
+    '@context' => 'https://schema.org',
+    '@type'    => 'BreadcrumbList',
+    'itemListElement' => [
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home',           'item' => BASE_URL],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'Privacy Policy', 'item' => BASE_URL . '/privacy.php'],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
 include 'includes/header.php';
 ?>
 

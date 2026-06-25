@@ -23,7 +23,30 @@ if ($search_query) {
     $display_title = 'Latest Articles';
 }
 
-$page_title = $display_title . ' | FTLuma-Light';
+$page_title = $display_title . ' | FTLuma';
+
+if ($search_query) {
+    $page_description = 'Search results for "' . $search_query . '" on FTLuma. ' . count($posts) . ' article' . (count($posts) !== 1 ? 's' : '') . ' found.';
+} elseif ($category_slug && !empty($category_name)) {
+    $page_description = 'Browse all FTLuma articles in the ' . $category_name . ' category. Financial clarity, insights, and actionable advice.';
+} else {
+    $page_description = 'Browse all FTLuma articles on personal finance, money mindset, and financial clarity for young adults in their 20s.';
+}
+
+$breadcrumb_items = [
+    ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home',     'item' => BASE_URL],
+    ['@type' => 'ListItem', 'position' => 2, 'name' => 'Articles', 'item' => BASE_URL . '/articles.php'],
+];
+if (!empty($category_name)) {
+    $breadcrumb_items[] = ['@type' => 'ListItem', 'position' => 3, 'name' => $category_name, 'item' => BASE_URL . '/articles.php?slug=' . urlencode($category_slug)];
+}
+
+$structured_data = json_encode([
+    '@context' => 'https://schema.org',
+    '@type'    => 'BreadcrumbList',
+    'itemListElement' => $breadcrumb_items,
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
 include 'includes/header.php';
 ?>
 
@@ -49,16 +72,35 @@ include 'includes/header.php';
     <div class="layout-with-sidebar">
         <!-- Main Content -->
         <div class="main-content">
-            <div class="section-header">
-                <h2>Found <span class="text-gradient"><?php echo count($posts); ?></span> Articles</h2>
-            </div>
+            <?php if ($search_query): ?>
+                <div class="search-results-header">
+                    <div>
+                        <p class="search-results-label">Search results for</p>
+                        <h2>"<span class="text-gradient"><?php echo e($search_query); ?></span>"</h2>
+                        <p style="color:var(--text-muted);margin-top:0.5rem;"><?php echo count($posts); ?> article<?php echo count($posts) !== 1 ? 's' : ''; ?> found</p>
+                    </div>
+                    <a href="<?php echo BASE_URL; ?>/articles.php" class="clear-search">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        Clear search
+                    </a>
+                </div>
+            <?php elseif ($category_slug && !empty($category_name)): ?>
+                <div class="section-header">
+                    <h2><span class="text-gradient"><?php echo e($category_name); ?></span></h2>
+                    <a href="<?php echo BASE_URL; ?>/articles.php" style="font-size:0.875rem;color:var(--text-muted);">← All Articles</a>
+                </div>
+            <?php else: ?>
+                <div class="section-header">
+                    <h2>All <span class="text-gradient">Articles</span></h2>
+                </div>
+            <?php endif; ?>
 
             <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
                 <?php if (!empty($posts)): ?>
                     <?php foreach ($posts as $post): ?>
                         <article class="card">
                             <div class="card-img" style="height: 220px;">
-                                <img src="<?php echo get_image_url($post['featured_image']); ?>" alt="<?php echo e($post['title']); ?>">
+                                <img src="<?php echo get_image_url($post['featured_image']); ?>" alt="<?php echo e($post['title']); ?>" loading="lazy">
                                 <div class="card-badge"><?php echo e($post['category_name']); ?></div>
                             </div>
                             <div class="card-content">
@@ -70,7 +112,7 @@ include 'includes/header.php';
                                 <div class="card-footer">
                                     <div class="author">
                                         <?php if ($post['author_image']): ?>
-                                            <img src="<?php echo get_image_url($post['author_image']); ?>" alt="" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                                            <img src="<?php echo get_image_url($post['author_image']); ?>" alt="" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" loading="lazy">
                                         <?php else: ?>
                                             <div class="author-img"></div>
                                         <?php endif; ?>
@@ -116,9 +158,11 @@ include 'includes/header.php';
 
             <div class="sidebar-box newsletter-box">
                 <h3 class="sidebar-title">Weekly Digest</h3>
-                <p style="font-size: 0.875rem; margin-bottom: 1.5rem;">The best of FTLuma-Light insights, delivered straight to your inbox.</p>
-                <input type="email" placeholder="email@example.com">
-                <button>Subscribe</button>
+                <p style="font-size: 0.875rem; margin-bottom: 1.5rem;">The best of FTLuma insights, delivered straight to your inbox.</p>
+                <form action="<?php echo BASE_URL; ?>/subscribe.php" method="POST">
+                    <input type="email" name="email" placeholder="email@example.com" required>
+                    <button type="submit">Subscribe</button>
+                </form>
             </div>
         </aside>
     </div>
@@ -205,6 +249,48 @@ include 'includes/header.php';
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
+}
+.search-results-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+}
+.search-results-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+.search-results-header h2 {
+    font-size: 2rem;
+    margin: 0;
+}
+.clear-search {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    background: var(--bg-light);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+}
+.clear-search:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-200);
+    color: var(--primary-700);
 }
 </style>
 

@@ -12,7 +12,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$page_title = 'Get in Touch';
+$page_title       = 'Contact FTLuma – Get in Touch';
+$page_description = 'Have a question, tip, or partnership inquiry? Reach out to the FTLuma team. We love hearing from our community.';
+
+$structured_data = json_encode([
+    '@context' => 'https://schema.org',
+    '@graph'   => [
+        [
+            '@type'       => 'ContactPage',
+            '@id'         => BASE_URL . '/contact.php',
+            'url'         => BASE_URL . '/contact.php',
+            'name'        => 'Contact FTLuma',
+            'description' => 'Reach out to the FTLuma team.',
+            'breadcrumb'  => [
+                '@type' => 'BreadcrumbList',
+                'itemListElement' => [
+                    ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home',    'item' => BASE_URL],
+                    ['@type' => 'ListItem', 'position' => 2, 'name' => 'Contact', 'item' => BASE_URL . '/contact.php'],
+                ],
+            ],
+        ],
+        [
+            '@type'       => 'Organization',
+            '@id'         => BASE_URL . '/#organization',
+            'contactPoint' => [
+                '@type'       => 'ContactPoint',
+                'email'       => 'info@ftluma-light.com',
+                'telephone'   => '+254140147873',
+                'contactType' => 'customer support',
+                'areaServed'  => 'Worldwide',
+            ],
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
 include 'includes/header.php';
 ?>
 
@@ -77,7 +110,7 @@ include 'includes/header.php';
 
         <!-- Contact Form -->
         <div class="contact-form">
-            <form action="#" method="POST">
+            <form action="<?php echo BASE_URL; ?>/contact.php" method="POST">
                 <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
 
                     <div class="form-group">
